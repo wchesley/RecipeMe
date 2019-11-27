@@ -2,12 +2,12 @@
   <div class="container">
     <div id="navbar-main">
       <ul class="nav navbar-nav">
-        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/" class="btn btn-primary">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></li>
-        <li *ngIf="auth.isLoggedIn()"><a routerLink="/profile">{{ auth.getUserDetails()?.name }}</a></li>
-        <li *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></li>
+        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" class="btn btn-primary">Sign in</a></li>
+        <li *ngIf="auth.isLoggedIn()"><a routerLink="/profile" class="btn btn-primary">{{ auth.getUserDetails()?.name }}</a></li>
+        <li *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()" class="btn btn-primary">Logout</a></li>
       </ul>
     </div>
   </div>
