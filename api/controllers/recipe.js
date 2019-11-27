@@ -18,5 +18,5 @@ let saveRecipe = (req, rex, next) => {
 }
 
 module.exports = {
-
+    saveRecipe,
 }
