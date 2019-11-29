@@ -37,6 +37,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
+app.use(express.static(path.join(__dirname, '/client/dist/')));
+
 
 // [SH] Initialise Passport before using the route middleware
 app.use(passport.initialize());
