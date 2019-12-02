@@ -6,7 +6,8 @@ import { RecipeAPIService } from '../recipe-api.service';
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.css']
 })
-export class RecipeComponent implements OnInit {
+export class RecipeComponent {
+  searchQuery:String;
   recipes;
   recipeTitle;
   Img;
@@ -16,14 +17,20 @@ export class RecipeComponent implements OnInit {
 
   constructor(private recipe: RecipeAPIService) { }
 
-  ngOnInit() {
-    this.recipe.getRecipe("arrab").subscribe( data => {
+  searchRecipe() {
+    this.recipe.getRecipe(this.searchQuery).subscribe( data => {
       // console.log(data);
       let food = data["meals"];
+      let keys = Object.keys(food);
       food.forEach((recipe) => {
         this.recipeTitle = recipe["strMeal"];
         this.Img = recipe["strMealThumb"];
         this.Instructions = recipe["strInstructions"];
+        keys.forEach(keyName => {
+          if(keyName.includes("strIngredient") || keyName.includes("strMeasure")){
+
+          }
+        });
         this.ingredients.push(recipe["strIngredient1"] +" - "+  recipe["strMeasure1"]);
         this.ingredients.push(recipe["strIngredient2"] +" - "+  recipe["strMeasure2"]);
         this.ingredients.push(recipe["strIngredient3"] +" - "+  recipe["strMeasure3"]);
