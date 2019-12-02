@@ -11,8 +11,8 @@ export class RecipeAPIService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getRecipe() {
-    return this.httpClient.get('https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata').pipe(
+  public getRecipe(query:String) {
+    return this.httpClient.get('https://www.themealdb.com/api/json/v1/1/search.php?s='+query).pipe(
       map(res => res)
     );
   }
