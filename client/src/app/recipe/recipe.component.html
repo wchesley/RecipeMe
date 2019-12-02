@@ -1,8 +1,10 @@
 <p>recipe works!</p>
 <div class="container">
     <div class="row">
-        <p>recipe:</p>
+        <p>recipe: </p>
         <p> {{recipeTitle}} </p>
-
+        <div *ngFor="let ingredient of ingredients" >
+            <p>{{ingredient}}</p>
+        </div>
     </div>
 </div>
