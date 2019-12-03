@@ -10,10 +10,19 @@
     <div class="container">
         <div class="row">
             <p>recipe: </p>
-            <p> {{ recipeTitle }} </p>
-            <div class="row">{{ Instructions }}</div>
-            <div *ngFor="let ingredient of ingredients">
-                <p>{{ ingredient }}</p>
+            <div class="col-lg-3">
+                <div *ngFor="let recipe of recipes">
+                    <div class="card" style="width: 50rem;">
+                        <form (submit)="saveRecipe()">
+                        <h4 class="card-title">{{ recipeTitle }}</h4>
+                        <div class="card-text">{{ Instructions }}</div>
+                        <div *ngFor="let ingredient of ingredients" class="card-footer">
+                            <p>{{ ingredient }}</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
