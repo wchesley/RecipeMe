@@ -18,4 +18,5 @@ router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
 router.post('/saverecipe', ctrlRecipe.saveRecipe);
+
 module.exports = router;
