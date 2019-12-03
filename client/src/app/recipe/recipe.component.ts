@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RecipeAPIService } from '../recipe-api.service';
+import { AuthenticationService, UserDetails } from '../authentication.service';
 
 @Component({
   selector: 'app-recipe',
@@ -7,6 +8,7 @@ import { RecipeAPIService } from '../recipe-api.service';
   styleUrls: ['./recipe.component.css']
 })
 export class RecipeComponent {
+  
   searchQuery:String;
   recipes;
   recipeTitle;
@@ -15,18 +17,21 @@ export class RecipeComponent {
   cuisine; 
   category;
   ingredients:any=[];
+  userdeets; 
   //measurements:any=[];
 
-  constructor(private recipe: RecipeAPIService) { }
+  constructor(private recipe: RecipeAPIService) {}
   saveRecipe() {
+    this.userdeets = "but";
     let body = {
       title:String = this.recipeTitle,
-      instrucions:String = this.instructions,
+      instructions:String = this.instructions,
       cuisine:String = this.cuisine,
       category:String = this.category,
       //ingredients:String = this.ingredients,
-      imgURL:String = this.img
-    }
+      imgURL:String = this.img,
+      user:String = this.userdeets,
+    } 
     this.recipe.saveRecipe(body).subscribe(data => {
       console.log(data);
     }, error => console.log(error));
