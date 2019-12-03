@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 let recipe = mongoose.model('Recipe');
 
 let saveRecipe = (req, rex, next) => {
-    let Recipe = new recipe; 
+    let Recipe = new recipe;
+    Recipe.title = req.body.title; 
     Recipe.instructions  = req.body.instructions; 
     Recipe.category = req.body.category;
     Recipe.cuisine = req.body.cuisine;
@@ -13,7 +14,10 @@ let saveRecipe = (req, rex, next) => {
             console.log(err);
             return;
         }
-        else{return}
+        else{
+            console.log("POST /api/saverecipe");
+            return
+        }
     })
 }
 
