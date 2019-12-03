@@ -10,22 +10,38 @@ export class RecipeComponent {
   searchQuery:String;
   recipes;
   recipeTitle;
-  Img;
-  Instructions;
+  img;
+  instructions;
+  cuisine; 
+  category;
   ingredients:any=[];
   //measurements:any=[];
 
   constructor(private recipe: RecipeAPIService) { }
-
+  saveRecipe() {
+    let body = {
+      title:String = this.recipeTitle,
+      instrucions:String = this.instructions,
+      cuisine:String = this.cuisine,
+      category:String = this.category,
+      //ingredients:String = this.ingredients,
+      imgURL:String = this.img
+    }
+    this.recipe.saveRecipe(body).subscribe(data => {
+      console.log(data);
+    }, error => console.log(error));
+  }
   searchRecipe() {
     this.recipe.getRecipe(this.searchQuery).subscribe( data => {
       // console.log(data);
-      let food = data["meals"];
-      let keys = Object.keys(food);
-      food.forEach((recipe) => {
+      this.recipes = data["meals"];
+      let keys = Object.keys(this.recipes);
+      this.recipes.forEach((recipe) => {
         this.recipeTitle = recipe["strMeal"];
-        this.Img = recipe["strMealThumb"];
-        this.Instructions = recipe["strInstructions"];
+        this.img = recipe["strMealThumb"];
+        this.instructions = recipe["strInstructions"];
+        this.cuisine = recipe["strArea"];
+        this.category = recipe["strCategory"];
         keys.forEach(keyName => {
           if(keyName.includes("strIngredient") || keyName.includes("strMeasure")){
 
