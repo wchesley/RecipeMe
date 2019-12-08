@@ -1,81 +1,120 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RecipeAPIService } from '../recipe-api.service';
 import { AuthenticationService, UserDetails } from '../authentication.service';
+import { Recipes } from './recipeInterface';
 
 @Component({
   selector: 'app-recipe',
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.css']
 })
-export class RecipeComponent {
-  
-  searchQuery:String;
-  recipes;
-  recipeTitle;
+
+export class RecipeComponent implements OnInit {
+
+  recipeTitle: string;
   img;
   instructions;
-  cuisine; 
+  cuisine;
   category;
-  ingredients:any=[];
-  userdeets; 
-  //measurements:any=[];
+  ingredients: any = [];
+  measurements: any = [];
+  user: UserDetails;
+  searchQuery: String;
+  recipes: Recipes[] = [{
+    recipetitle: "",
+    Img: "",
+    Instructions: "",
+    Cuisine: "",
+    Category: "",
+  }];
 
-  constructor(private recipe: RecipeAPIService) {}
+
+
+  constructor(private recipe: RecipeAPIService, private auth: AuthenticationService) { }
+  ngOnInit() {
+    this.auth.profile().subscribe(data => {
+      this.user = data;
+      console.log(this.user.recipesList["title"]);
+    }, (err) => {
+      console.log(err);
+    });
+
+  }
+  showSavedRecipes() {
+    console.log("Fetching saved recipes...");
+    console.log("Me?" + this.user._id);
+    this.recipe.getSavedRecipe(this.user._id).subscribe(data => {
+      let recipeData = data["recipesList"].map(data => data)
+      this.mapRecipe(recipeData);
+      console.log("MAYBE WE DO A THING?!");
+    })
+  }
+
   saveRecipe() {
-    this.userdeets = "but";
     let body = {
-      title:String = this.recipeTitle,
-      instructions:String = this.instructions,
-      cuisine:String = this.cuisine,
-      category:String = this.category,
-      //ingredients:String = this.ingredients,
-      imgURL:String = this.img,
-      user:String = this.userdeets,
-    } 
+      title: this.recipeTitle,
+      instructions: this.instructions,
+      cuisine: this.cuisine,
+      category: this.category,
+      //ingredients: this.ingredients,
+      imgURL: this.img,
+      id: this.user._id
+    }
+    console.log(body);
     this.recipe.saveRecipe(body).subscribe(data => {
       console.log(data);
     }, error => console.log(error));
   }
-  searchRecipe() {
-    this.recipe.getRecipe(this.searchQuery).subscribe( data => {
-      // console.log(data);
-      this.recipes = data["meals"];
-      let keys = Object.keys(this.recipes);
-      this.recipes.forEach((recipe) => {
-        this.recipeTitle = recipe["strMeal"];
-        this.img = recipe["strMealThumb"];
-        this.instructions = recipe["strInstructions"];
-        this.cuisine = recipe["strArea"];
-        this.category = recipe["strCategory"];
-        keys.forEach(keyName => {
-          if(keyName.includes("strIngredient") || keyName.includes("strMeasure")){
 
-          }
-        });
-        this.ingredients.push(recipe["strIngredient1"] +" - "+  recipe["strMeasure1"]);
-        this.ingredients.push(recipe["strIngredient2"] +" - "+  recipe["strMeasure2"]);
-        this.ingredients.push(recipe["strIngredient3"] +" - "+  recipe["strMeasure3"]);
-        this.ingredients.push(recipe["strIngredient4"] +" - "+ recipe["strMeasure4"]);
-        this.ingredients.push(recipe["strIngredient5"] +" - "+ recipe["strMeasure5"]);
-        this.ingredients.push(recipe["strIngredient6"] +" - "+ recipe["strMeasure6"]);
-        this.ingredients.push(recipe["strIngredient7"] +" - "+ recipe["strMeasure7"]);
-        this.ingredients.push(recipe["strIngredient8"] +" - "+ recipe["strMeasure8"]);
-        this.ingredients.push(recipe["strIngredient9"] +" - "+ recipe["strMeasure9"]);
-        this.ingredients.push(recipe["strIngredient10"] +" - "+ recipe["strMeasure10"]);
-        this.ingredients.push(recipe["strIngredient11"] +" - "+ recipe["strMeasure11"]);
-        this.ingredients.push(recipe["strIngredient12"] +" - "+ recipe["strMeasure12"]);
-        this.ingredients.push(recipe["strIngredient13"] +" - "+ recipe["strMeasure13"]);
-        this.ingredients.push(recipe["strIngredient14"] +" - "+ recipe["strMeasure14"]);
-        this.ingredients.push(recipe["strIngredient15"] +" - "+ recipe["strMeasure15"]);
-        this.ingredients.push(recipe["strIngredient16"] +" - "+ recipe["strMeasure16"]);
-        this.ingredients.push(recipe["strIngredient17"] +" - "+ recipe["strMeasure17"]);
-        this.ingredients.push(recipe["strIngredient18"] +" - "+ recipe["strMeasure18"]);
-        this.ingredients.push(recipe["strIngredient19"] +" - "+ recipe["strMeasure19"]);
-        this.ingredients.push(recipe["strIngredient20"] +" - "+ recipe["strMeasure20"]);
-        
-      });
-      
+  searchRecipe() {
+    console.log(this.user)
+    this.recipe.getRecipe(this.searchQuery).subscribe(data => {
+      this.mapAPIRecipe(data);
+      // console.log(data);
+      //this.recipes = data["meals"];
+      //let keys = Object.keys(this.recipes);
+      //this.recipes.forEach((recipe) => {
+      //this.recipeTitle = recipe["strMeal"];
+      //this.img = recipe["strMealThumb"];
+      // this.instructions = recipe["strInstructions"];
+      //this.cuisine = recipe["strArea"];
+      // this.category = recipe["strCategory"];
+
+
     })
+  }
+
+  mapRecipe(rawRecipeData: any) {
+    let recipesList = rawRecipeData
+    recipesList.forEach(element => {
+      this.recipes.push({
+        recipetitle: element["title"],
+        //console.log(this.recipeTitle)
+        Img: element["imgURL"],
+        Instructions: element["instructions"],
+        Cuisine: element["cuisine"],
+        Category: element["category"],
+      })
+    });
+    //this.recipes.recipetitle = this.recipeTitle; <= undefined?
+    console.log("ARRA BRA^")
+  }
+
+  mapAPIRecipe(rawRecipeData: any) {
+    this.recipes = rawRecipeData["meals"];
+    //console.log(this.recipes);
+    let item = rawRecipeData["meals"];
+    console.log(item);
+    item.forEach(element => {
+      this.recipes.push({
+        recipetitle: element["strMeal"],
+        Instructions: element["strInstructions"],
+        Img: element["strMealThumb"],
+        Cuisine: element["strArea"],
+        Category: element["strCategory"],
+      })
+      console.log(this.recipes);
+    });
   }
 
 }
