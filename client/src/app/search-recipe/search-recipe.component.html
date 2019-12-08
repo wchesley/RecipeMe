@@ -1,0 +1,19 @@
+
+<div class="container">
+    <form (submit)="searchRecipe()">
+        <div class="form-group">
+            <label for="search">Search:</label>
+            <input type="text" name="search" class="form=control" [(ngModel)]="searchQuery">
+        </div>
+        <button type="submit" class="btn btn-primary">Search!</button>
+    </form>
+</div>
+<div >
+    <div *ngFor="let recipe of recipes">
+        <div class="card" style="width: 50rem;">
+            <h4 class="card-title">{{ recipe?.recipetitle }}</h4>
+            <div class="card-text">{{ recipe?.Instructions }}</div>
+            <button (click)="saveRecipe()" class="btn btn-primary" >Save!</button>
+        </div>
+    </div>
+</div>
