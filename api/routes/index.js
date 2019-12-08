@@ -18,5 +18,7 @@ router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
 router.post('/saverecipe', ctrlRecipe.saveRecipe);
+router.get('/UserRecipes', ctrlRecipe.getSavedRecipes);
+router.get('/getrandom', ctrlRecipe.getRandomRecipe);
 
 module.exports = router;
