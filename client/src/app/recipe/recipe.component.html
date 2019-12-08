@@ -1,5 +1,5 @@
 <div class="containter">
-    <p>recipe works!</p>
+    <div class="container">
     <form (submit)="searchRecipe()">
         <div class="form-group">
             <label for="search">Search:</label>
@@ -7,20 +7,32 @@
         </div>
         <button type="submit" class="btn btn-primary">Search!</button>
     </form>
+        <div class="row">
+            <button type="button" (click)="showSavedRecipes()" class="btn btn-primary">My recipes</button>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <p>recipe: </p>
             <div class="col-lg-3">
-                <div *ngFor="let recipe of recipes">
+                <div *ngIf="recipeTitle">
                     <div class="card" style="width: 50rem;">
-                        <form (submit)="saveRecipe()">
-                        <h4 class="card-title">{{ recipeTitle }}</h4>
+                        <h4 class="card-title">{{recipeTitle}}</h4>
                         <div class="card-text">{{ instructions }}</div>
-                        <div *ngFor="let ingredient of ingredients" class="card-footer">
-                            <p>{{ ingredient }}</p>
+                    </div>
+                </div>
+                <div *ngIf="recipes">
+                   <div *ngFor="let recipe of recipes">
+                        <div class="card" style="width: 50rem;">
+                            <form (submit)="saveRecipe()">
+                                <h4 class="card-title">{{ recipe?.recipetitle }}</h4>
+                                <div class="card-text">{{ recipe?.Instructions }}</div>
+                                <div *ngFor="let ingredient of ingredients" class="card-footer">
+                                    <p>{{ ingredient }}</p>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        </form>
                     </div>
                 </div>
             </div>
