@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './authentication.service';
 import { AuthGuardService } from './auth-guard.service';
 import { RecipeComponent } from './recipe/recipe.component';
+import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
+import { RandomRecipeComponent } from './random-recipe/random-recipe.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,7 +29,9 @@ const routes: Routes = [
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    RecipeComponent
+    RecipeComponent,
+    SearchRecipeComponent,
+    RandomRecipeComponent
   ],
   imports: [
     BrowserModule,
