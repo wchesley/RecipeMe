@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, UserDetails } from '../authentication.service';
-
+import { RecipeComponent } from '../recipe/recipe.component';
 @Component({
   templateUrl: './profile.component.html'
 })
