@@ -19,14 +19,8 @@ export class RecipeComponent implements OnInit {
   ingredients: any = [];
   measurements: any = [];
   user: UserDetails;
-  searchQuery: String;
-  recipes: Recipes[] = [{
-    recipetitle: "",
-    Img: "",
-    Instructions: "",
-    Cuisine: "",
-    Category: "",
-  }];
+  
+  recipes: Recipes[] = [];
 
 
 
@@ -34,11 +28,17 @@ export class RecipeComponent implements OnInit {
   ngOnInit() {
     this.auth.profile().subscribe(data => {
       this.user = data;
-      console.log(this.user.recipesList["title"]);
+      //console.log(this.user);
+      this.mapRecipe(this.user.recipesList);
     }, (err) => {
       console.log(err);
     });
-
+      //this.recipe.getRandomRecipe().subscribe(data => {
+        //eww this is such a dirty hack to get this to work: 
+        //this.user is "undefined", even right underneath 
+        //the assignment call "this.user = data"; 
+        //this.mapRecipe(this.user.recipesList);
+      //})
   }
   showSavedRecipes() {
     console.log("Fetching saved recipes...");
@@ -66,55 +66,21 @@ export class RecipeComponent implements OnInit {
     }, error => console.log(error));
   }
 
-  searchRecipe() {
-    console.log(this.user)
-    this.recipe.getRecipe(this.searchQuery).subscribe(data => {
-      this.mapAPIRecipe(data);
-      // console.log(data);
-      //this.recipes = data["meals"];
-      //let keys = Object.keys(this.recipes);
-      //this.recipes.forEach((recipe) => {
-      //this.recipeTitle = recipe["strMeal"];
-      //this.img = recipe["strMealThumb"];
-      // this.instructions = recipe["strInstructions"];
-      //this.cuisine = recipe["strArea"];
-      // this.category = recipe["strCategory"];
-
-
-    })
-  }
-
   mapRecipe(rawRecipeData: any) {
     let recipesList = rawRecipeData
     recipesList.forEach(element => {
       this.recipes.push({
         recipetitle: element["title"],
-        //console.log(this.recipeTitle)
         Img: element["imgURL"],
         Instructions: element["instructions"],
         Cuisine: element["cuisine"],
         Category: element["category"],
       })
+      console.log(this.recipes)
+      console.log("MYAPI^")
+      
     });
     //this.recipes.recipetitle = this.recipeTitle; <= undefined?
-    console.log("ARRA BRA^")
-  }
-
-  mapAPIRecipe(rawRecipeData: any) {
-    this.recipes = rawRecipeData["meals"];
-    //console.log(this.recipes);
-    let item = rawRecipeData["meals"];
-    console.log(item);
-    item.forEach(element => {
-      this.recipes.push({
-        recipetitle: element["strMeal"],
-        Instructions: element["strInstructions"],
-        Img: element["strMealThumb"],
-        Cuisine: element["strArea"],
-        Category: element["strCategory"],
-      })
-      console.log(this.recipes);
-    });
   }
 
 }
