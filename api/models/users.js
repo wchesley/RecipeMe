@@ -2,6 +2,15 @@ var mongoose = require( 'mongoose' );
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
+let userRecipes = new mongoose.Schema({
+  title:String,
+  instructions:String,
+  category:String,
+  imgURL:String,
+  cuisine:String,
+  //ingredients:[],
+  //measurements:[],
+})
 var userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -14,7 +23,7 @@ var userSchema = new mongoose.Schema({
   },
   hash: String,
   salt: String,
-  recipesList:[{type:String}],
+  recipesList:[userRecipes],
 });
 
 userSchema.methods.setPassword = function(password){
