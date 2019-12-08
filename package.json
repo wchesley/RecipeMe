@@ -20,6 +20,7 @@
     "morgan": "^1.9.1",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
+    "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
     "uglify-js": "^3.4.9"
   },
@@ -33,7 +34,7 @@
     "gulp-watch": "^4.3.4"
   },
   "engines": {
-    "node":"10.16.3",
-    "npm":"6.9.0"
+    "node": "10.16.3",
+    "npm": "6.9.0"
   }
 }
