@@ -16,6 +16,8 @@
                 <div class="card-text" id="instructions">{{ recipe?.Instructions }}</div>
                 <p id="Cuisine">Type: &nbsp; {{recipe?.Cuisine}}</p>
                 <p id="Category">Category:&nbsp;{{recipe?.Category}}</p>
+                <div *ngFor="let ingredient of ingredients">{{ingredient}}&nbsp;</div>
+                <div *ngFor="let measure of measurements">-&nbsp; {{measure}}</div>
                 <button (click)="saveRecipe($event)" class="btn btn-primary">Save!</button>
             </form>
         </div>
