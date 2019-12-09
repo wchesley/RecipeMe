@@ -1,10 +1,10 @@
-<div *ngFor="let recipe of recipes">
-<div class="container">
-    <div class="card" style="width: 50rem;">
-        <p>Random Recipe:</p>
-        <h4 class="card-title">{{ recipe?.recipetitle }}</h4>
-        <div class="card-text">{{ recipe?.Instructions }}</div>
-        <p>Type: &nbsp; {{recipes?.Cuisine}}</p>
+<div *ngIf="recipes">
+    <div *ngFor="let recipe of recipes">
+        <div class="card col-sm" style="width: 50rem;">
+            <h4 class="card-title" id="title">{{ recipe?.recipetitle }}</h4>
+            <img src="{{recipe?.Img}}" class="card-img" alt="No image" id="img">
+            <div class="card-text" id="instructions">{{ recipe?.Instructions }}</div>
+            <p id="Cuisine" class="card-text">Type: &nbsp; {{recipe?.Cuisine}}</p>
+            <p id="Category" class="card-text">Category:&nbsp;{{recipe?.Category}}</p>
+        </div>
     </div>
-</div>
-</div>
