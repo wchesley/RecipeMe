@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('request');
 let recipe = mongoose.model('Recipe');
 let user = mongoose.model('User');
-const http = require('http');
+const http = require('https');
 
 let saveRecipe = (req, res, next) => {
     user.findById({_id: req.body.id},(err, doc) => {
@@ -44,24 +44,56 @@ let getSavedRecipes = (req, res, next) => {
     });
 }
 
-//moved to frontend: RecipeAPI service: 
+
 let getRandomRecipe = (req, res, next) => {
-    request.get('')
-        .on('response', (response) => {
-            console.log(response);
-            //return response; 
-        }).pipe(response);
-    res.status(200);
-    return;
+   try {
+       http.get('https://www.themealdb.com/api/json/v1/1/random.php', data => {
+           data.setEncoding('utf-8');
+           let body = "";
+           data.on('data', obj => {
+               body += obj;
+           })
+           data.on('end', () => {
+               //console.log('Grabbed'+ body);
+               res.status(200).send(body);
+               return;
+           })
+       })
+   }
+   catch(err) {
+       res.status(500).send("ERROR:+ " + err).end();
+       return;
+   }
+   //res.status(200);
 }
-
-let getRecipeByID = () => {
-
+//still on front end =>
+let searchRecipe = (req, res, next) => {
+    console.log(req.query.search);
+    let url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=' + req.query.search;
+    try {
+        http.get(url, data => {
+            data.setEncoding('utf-8');
+            let body ="";
+            data.on('data', obj => {
+                body += obj;
+            })
+            data.on('end', () => {
+                console.log('found: ' + body);
+                res.status(200).send(body).end();
+                return body;
+            })
+        })
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send("ERROR: " + err).end();
+        return;
+    }
 }
 
 module.exports = {
     saveRecipe,
     getSavedRecipes,
     getRandomRecipe,
-
+    searchRecipe,
 }
