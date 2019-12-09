@@ -1,4 +1,3 @@
-
 <div class="container">
     <form (submit)="searchRecipe()">
         <div class="form-group">
@@ -8,12 +7,17 @@
         <button type="submit" class="btn btn-primary">Search!</button>
     </form>
 </div>
-<div >
-    <div *ngFor="let recipe of recipes">
+<div>
+    <div *ngFor="let recipe of recipeArray">
         <div class="card" style="width: 50rem;">
-            <h4 class="card-title">{{ recipe?.recipetitle }}</h4>
-            <div class="card-text">{{ recipe?.Instructions }}</div>
-            <button (click)="saveRecipe()" class="btn btn-primary" >Save!</button>
+            <form>
+                <h4 class="card-title" id="title">{{ recipe?.recipetitle }}</h4>
+                <img src="{{recipe?.Img}}" class="card-img-top" alt="No image" id="img">
+                <div class="card-text" id="instructions">{{ recipe?.Instructions }}</div>
+                <p id="Cuisine">Type: &nbsp; {{recipe?.Cuisine}}</p>
+                <p id="Category">Category:&nbsp;{{recipe?.Category}}</p>
+                <button (click)="saveRecipe($event)" class="btn btn-primary">Save!</button>
+            </form>
         </div>
     </div>
 </div>

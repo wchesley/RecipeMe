@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,} from '@angular/core';
 import { RecipeAPIService } from '../recipe-api.service';
 import { UserDetails } from '../authentication.service';
-import { Recipes } from '../recipe/recipeInterface';
+import {  Recipes } from '../recipe/recipeInterface';
+
 
 @Component({
   selector: 'app-search-recipe',
@@ -10,21 +11,15 @@ import { Recipes } from '../recipe/recipeInterface';
 })
 
 export class SearchRecipeComponent {
-
+  
   recipeTitle;
   instructions;
   img;
   cuisine;
   category;
   docReady: boolean = false;
-  TesArray: { title:String, instruct:String, img, Cuisi, cate, }
-  recipes: Recipes[] = [{
-    recipetitle: this.recipeTitle,
-    Instructions: this.instructions,
-    Img: this.img,
-    Cuisine: this.cuisine,
-    Category: this.category,
-  }];
+  recipeArray:Array<RecipeHelper> = new Array<RecipeHelper>();
+
 
   searchQuery: String;
   @Input() user: UserDetails;
@@ -40,6 +35,7 @@ export class SearchRecipeComponent {
   }
 
   mapAPIRecipe(rawRecipeData: any) {
+    //let recipes:Recipes
     let item = rawRecipeData["meals"];
     item.forEach(element => {
       this.recipeTitle = element["strMeal"];
@@ -47,35 +43,56 @@ export class SearchRecipeComponent {
       this.img = element["strMealThumb"];
       this.cuisine = element["strArea"];
       this.category = element["strCategory"];
-      this.recipes.push({
-        recipetitle: this.recipeTitle,
-        Instructions: this.instructions,
-        Img: this.img,
-        Cuisine: this.cuisine,
-        Category: this.category,
-      })
-      console.log(this.recipes);
+     //recipes = ({
+        //recipetitle: this.recipeTitle,
+        //Instructions: this.instructions,
+        //Img: this.img,
+        //Cuisine: this.cuisine,
+        //Category: this.category,
+      //})
+      let recipeList = new RecipeHelper(this.recipeTitle, this.img, this.instructions, this.cuisine, this.category); 
+      this.recipeArray.push(recipeList)
       console.log("SearchedrecipesAPI^");
-
     });
     this.docReady = true;
-
+    
   }
 
-  saveRecipe() {
+  saveRecipe(event:any) {
+    console.log(event.target.form.children.img);
+    console.log(event.target.form.children.instructions);
+    console.log("EVENT^?")
     let body = {
-      title: this.TesArray.title,
-      instructions: this.TesArray.instruct,
-      cuisine: this.TesArray.Cuisi,
-      category: this.TesArray.cate,
+      title: event.target.form.children.title.innerText,
+      instructions: event.target.form.children.instructions.innerText,
+      cuisine: event.target.form.children.Cuisine.innerText,
+      category: event.target.form.children.Category.innerText,
       //ingredients: this.ingredients,
-      imgURL: this.TesArray.img,
-      id: this.user._id
+      imgURL: event.target.form.children.img.currentSrc,
+      id: this.user._id,
     }
     console.log(body);
+    console.log('BODY^^');
+    //console.log(formData);
+    console.log("FORMDATA^^");
     this.recipe.saveRecipe(body).subscribe(data => {
       console.log(data);
     }, error => console.log(error));
   }
 
+}
+export class RecipeHelper  implements Recipes {
+  recipetitle: string;
+  Img: string;
+  Instructions: string;
+  Cuisine?: string;
+  Category?: string;
+  constructor(title:string, img:string, instructions:string, cuisine?:string, category?:string, ingredients?:[String], measurements?:[String]) {
+      this.recipetitle = title;
+      this.Img = img;
+      this.Instructions=instructions;
+      this.Cuisine=cuisine;
+      this.Category=category;
+  }
+  
 }
