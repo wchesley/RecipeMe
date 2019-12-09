@@ -20,5 +20,6 @@ router.post('/login', ctrlAuth.login);
 router.post('/saverecipe', ctrlRecipe.saveRecipe);
 router.get('/UserRecipes', ctrlRecipe.getSavedRecipes);
 router.get('/getrandom', ctrlRecipe.getRandomRecipe);
+router.get('/searchRecipe', ctrlRecipe.searchRecipe)
 
 module.exports = router;
