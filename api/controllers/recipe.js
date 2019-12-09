@@ -7,10 +7,12 @@ const http = require('http');
 let saveRecipe = (req, res, next) => {
     user.findById({_id: req.body.id},(err, doc) => {
         if(err){
-            res.status(500).send("Error reading database").end();
+            res.status(500).send("Error reading database: " + err).end();
+            return;
         }
-        if(!doc){
-            res.status(404).send("user not found");
+        if(!doc && !err){
+            res.status(404).send("user not found").end();
+            return;
         }
         else {
             doc.recipesList.push({
@@ -23,7 +25,7 @@ let saveRecipe = (req, res, next) => {
             })
             doc.markModified('recipesList');
             doc.save();
-            res.status(200).json(doc);
+            res.status(200).json(doc).end();;
         }
     })
 }
@@ -33,11 +35,12 @@ let getSavedRecipes = (req, res, next) => {
         if (err) {
             console.log(err);
             res.status(403).send({ error: "Failed to find user..." });
+            return;
         }
         //doc.recipesList is list of recipeID's saved for requesting User:
         //console.log(callback);
         res.status(200).json(doc);
-       
+        return;
     });
 }
 
