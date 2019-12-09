@@ -12,8 +12,10 @@ export class RecipeAPIService {
 
   constructor(private httpClient: HttpClient, private auth: AuthenticationService) { }
 
-  public getRecipe(query: String) {
-    return this.httpClient.get('https://www.themealdb.com/api/json/v1/1/search.php?s=' + query).pipe(
+  public getRecipe(query: string) {
+    //console.log('sending to server?')
+    //let params = new HttpParams().set('search', query)
+    return this.httpClient.get('https://www.themealdb.com/api/json/v1/1/search.php?s='+ query).pipe(
       map(res => res)
     );
   }
@@ -31,7 +33,7 @@ export class RecipeAPIService {
   }
 
   public getRandomRecipe(): Observable<any> {
-    return this.httpClient.get('https://www.themealdb.com/api/json/v1/1/random.php').pipe(
+    return this.httpClient.get('/api/getrandom').pipe(
       map(res => res)
     );
   }
